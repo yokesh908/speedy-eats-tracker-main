@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const API_BASE_URL = import.meta.env.DEV
-  ? 'http://localhost:3002/api'
+  ? 'http://localhost:3001/api'
   : '/api';
 
 
