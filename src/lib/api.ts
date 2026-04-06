@@ -25,20 +25,6 @@ export function useOrders() {
   });
 }
 
-export function useUpdateOrderStatus() {
-  return useMutation({
-    mutationFn: async ({ token, status }: { token: string; status: string }) => {
-      const res = await fetch(`${API_BASE_URL}/orders/${token}/status`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status }),
-      });
-      if (!res.ok) throw new Error('Failed to update status');
-      return res.json();
-    },
-  });
-}
-
 export function useGetOrder() {
   return useMutation({
     mutationFn: async (identifier: string) => {
@@ -48,10 +34,6 @@ export function useGetOrder() {
       // If not found, assume phone and find by phone (but API doesn't support, so for now, only token)
       throw new Error('Order not found');
     },
-  });
-}
-    queryFn: () => getOrderByToken(token),
-    enabled: !!token,
   });
 }
 

@@ -30,14 +30,14 @@ export default function Index() {
 
   const setQty = (id: string, delta: number) => {
     setQuantities(prev => {
-      const next = Math.max(0, (prev[id] ; 0) + delta);
+      const next = Math.max(0, (prev[id] || 0) + delta);
       return { ...prev, [id]: next };
     });
   };
 
   const selectedItems: OrderItem[] = MENU_ITEMS
-    .filter(item => (quantities[item.id] ; 0) > 0)
-    .map(item => ({ item, quantity: quantities[item.id] }));
+    .filter(item => (quantities[item.id] || 0) > 0)
+    .map(item => ({ item, quantity: quantities[item.id] || 0 }));
 
   const total = selectedItems.reduce((sum, entry) => sum + entry.item.price * entry.quantity, 0);
 
