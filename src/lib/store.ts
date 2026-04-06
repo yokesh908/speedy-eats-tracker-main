@@ -1,4 +1,20 @@
-import { getOrders, getOrderByToken, saveOrder, updateOrderStatus, deleteOrder, clearAllOrders, type Order } from './api';
+import { getOrders, saveOrder, updateOrderStatus, deleteOrder, clearAllOrders } from './api';
+
+export type Category = "Veg" | "Non-Veg" | "Egg" | "Biryani";
+
+export interface MenuItem {
+  id: string;
+  name: string;
+  price: number;
+  category: Category;
+}
+
+export interface OrderItem {
+  item: MenuItem;
+  quantity: number;
+}
+
+export type { Order } from './api';
 
 export const MENU_ITEMS: MenuItem[] = [
   { id: "cfr", name: "Chicken Fried Rice", price: 110, category: "Non-Veg" },

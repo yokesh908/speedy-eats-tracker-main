@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { MENU_ITEMS, MenuItem, OrderItem, Category, generateToken } from "@/lib/store";
+import { MENU_ITEMS, generateToken, getCategoryColor } from "@/lib/store";
+import type { MenuItem, OrderItem, Category } from "@/lib/store";
 import { useCreateOrder } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";

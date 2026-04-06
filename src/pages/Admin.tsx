@@ -1,7 +1,8 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useOrders, useUpdateOrderStatus, useDeleteOrder, useClearAllOrders } from "@/lib/api";
-import { MENU_ITEMS, Category, Order } from "@/lib/store";
+import { MENU_ITEMS } from "@/lib/store";
+import type { Category, Order } from "@/lib/store";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -18,7 +19,7 @@ export default function Admin() {
   const [authenticated, setAuthenticated] = useState(false);
   const [pin, setPin] = useState("");
   const [filter, setFilter] = useState<FilterType>("All");
-  const [tab, setTab] = useState<"orders" | "summary">("summary");
+  const [tab, setTab] = useState<"orders" | "summary">("orders");
   const [viewingOrder, setViewingOrder] = useState<Order | null>(null);
   const { toast } = useToast();
 
