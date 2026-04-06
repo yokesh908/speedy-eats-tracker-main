@@ -87,7 +87,7 @@ app.put('/api/orders/:token/status', (req, res) => {
   const { token } = req.params;
   const { status } = req.body;
 
-  if (!['processing', 'completed'].includes(status)) {
+  if (!['processing', 'confirmed'].includes(status)) {
     return res.status(400).json({ error: 'Invalid status' });
   }
 
@@ -98,6 +98,8 @@ app.put('/api/orders/:token/status', (req, res) => {
 
   orders[orderIndex].status = status;
   saveOrders();
+  res.json(orders[orderIndex]);
+});
 
   res.json({ message: 'Order status updated' });
 });

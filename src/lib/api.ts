@@ -12,7 +12,7 @@ export interface Order {
   total: number;
   screenshot?: string;
   timestamp: number;
-  status: 'processing' | 'completed';
+  status: 'processing' | 'confirmed';
   phone: string;
 }
 
@@ -25,9 +25,31 @@ export function useOrders() {
   });
 }
 
-export function useOrderByToken(token: string) {
-  return useQuery({
-    queryKey: ['order', token],
+export function useUpdateOrderStatus() {
+  return useMutation({
+    mutationFn: async ({ token, status }: { token: string; status: string }) => {
+      const res = await fetch(`${API_BASE_URL}/orders/${token}/status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
+      if (!res.ok) throw new Error('Failed to update status');
+      return res.json();
+    },
+  });
+}
+
+export function useGetOrder() {
+  return useMutation({
+    mutationFn: async (identifier: string) => {
+      // Try as token first
+      let res = await fetch(`${API_BASE_URL}/orders/${identifier}`);
+      if (res.ok) return res.json();
+      // If not found, assume phone and find by phone (but API doesn't support, so for now, only token)
+      throw new Error('Order not found');
+    },
+  });
+}
     queryFn: () => getOrderByToken(token),
     enabled: !!token,
   });

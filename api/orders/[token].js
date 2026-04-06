@@ -48,7 +48,7 @@ export default function handler(req, res) {
 
   if (req.method === 'PUT' && token) {
     const { status } = req.body;
-    if (!['processing', 'completed'].includes(status)) {
+    if (!['processing', 'confirmed'].includes(status)) {
       return res.status(400).json({ error: 'Invalid status' });
     }
 

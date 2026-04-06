@@ -83,9 +83,9 @@ export default function Admin() {
   const confirmComplete = async () => {
     if (!viewingOrder) return;
     try {
-      await updateStatusMutation.mutateAsync({ token: viewingOrder.token, status: "completed" });
+      await updateStatusMutation.mutateAsync({ token: viewingOrder.token, status: "confirmed" });
       setViewingOrder(null);
-      toast({ title: "Order completed", description: `Order ${viewingOrder.token} marked as completed.` });
+      toast({ title: "Order confirmed", description: `Order ${viewingOrder.token} marked as confirmed.` });
     } catch (error) {
       toast({ title: "Error", description: "Failed to update order status.", variant: "destructive" });
     }
@@ -280,8 +280,8 @@ export default function Admin() {
                   <div className="flex items-center gap-2">
                     <Tag className="h-4 w-4 text-primary" />
                     <span className="font-bold font-body tracking-wider text-primary">{order.token}</span>
-                    <Badge variant={order.status === "completed" ? "default" : "secondary"} className="text-[10px]">
-                      {order.status === "completed" ? "✅ Your order confirmed" : "⏳ Processing"}
+                    <Badge variant={order.status === "confirmed" ? "default" : "secondary"} className="text-[10px]">
+                      {order.status === "confirmed" ? "✅ Confirmed" : "⏳ Processing"}
                     </Badge>
                   </div>
                   <span className="text-xs text-muted-foreground">{new Date(order.timestamp).toLocaleString()}</span>
@@ -305,9 +305,9 @@ export default function Admin() {
                   <img src={order.screenshot} alt="Payment" className="w-full max-h-32 object-contain rounded-lg bg-secondary" />
                 )}
                 <div className="flex gap-2 pt-1">
-                  {order.status !== "completed" && (
+                  {order.status !== "confirmed" && (
                     <Button size="sm" className="flex-1 text-xs" onClick={() => handleComplete(order)}>
-                      <CheckCircle2 className="h-3 w-3 mr-1" /> Complete
+                      <CheckCircle2 className="h-3 w-3 mr-1" /> Confirm Order
                     </Button>
                   )}
                   <Button size="sm" variant="destructive" className="text-xs" onClick={() => handleDelete(order.token)}>
