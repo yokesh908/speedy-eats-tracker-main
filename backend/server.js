@@ -101,9 +101,6 @@ app.put('/api/orders/:token/status', (req, res) => {
   res.json(orders[orderIndex]);
 });
 
-  res.json({ message: 'Order status updated' });
-});
-
 // Delete order
 app.delete('/api/orders/:token', (req, res) => {
   const { token } = req.params;
@@ -137,11 +134,24 @@ function generateToken() {
 }
 
 // Start server (only in development)
-if (require.main === module) {
-  const PORT = process.env.PORT || 3001;
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+function startServer(port) {
+  const server = app.listen(port, '0.0.0.0', () => {
+    console.log(`Server running on port ${port}`);
   });
+
+  server.on('error', err => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`Port ${port} in use, trying ${port + 1}...`);
+      startServer(port + 1);
+    } else {
+      throw err;
+    }
+  });
+}
+
+if (require.main === module) {
+  const PORT = parseInt(process.env.PORT, 10) || 3001;
+  startServer(PORT);
 }
 
 // Export for Vercel
