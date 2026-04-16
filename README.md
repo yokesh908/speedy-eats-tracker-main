@@ -1,105 +1,58 @@
 # Speedy Eats Tracker
 
-A modern food delivery tracking application built with React, TypeScript, and Node.js.
+This project is a **Vite + React** app with a **Vercel API backend** in `api/` and **Upstash Redis** storage for orders.
 
 ## Features
 
-- **Frontend**: React + TypeScript + Vite + Tailwind CSS + Shadcn/ui
-- **Backend**: Node.js + Express + SQLite
-- **Order Management**: Place orders, track status, admin panel
-- **File Uploads**: Payment screenshot uploads
-- **Real-time Updates**: Hot reloading for development
+- **Frontend**: React + TypeScript + Vite + Tailwind + shadcn/ui
+- **Backend**: Vercel serverless functions in `api/`
+- **Database**: Upstash Redis via `@upstash/redis`
 
 ## Project Structure
 
 ```
 speedy-eats-tracker-main/
-├── backend/                 # Node.js/Express backend
-│   ├── server.js           # Main server file
-│   ├── package.json        # Backend dependencies
-│   ├── speedy_eats.db      # SQLite database (created automatically)
-│   └── uploads/            # Uploaded payment screenshots
-├── src/                    # React frontend
-│   ├── lib/
-│   │   ├── api.ts          # API client functions
-│   │   └── store.ts        # Data types and exports
-│   └── pages/              # React components
-└── package.json            # Frontend dependencies
+├── api/                     # Vercel API routes
+│   ├── orders.js            # /api/orders
+│   ├── orders/[token].js    # /api/orders/:token
+│   └── _lib/db.js           # Upstash Redis helpers
+├── src/                     # React frontend
+├── public/
+├── vercel.json
+└── package.json
 ```
 
-## Setup & Installation
+## Environment Variables
 
-### Prerequisites
+Create `.env.local` (copy `env.example`) and set:
 
-- Node.js (v16 or higher)
-- npm or yarn
+- `UPSTASH_REDIS_REST_URL`
+- `UPSTASH_REDIS_REST_TOKEN`
+- `VITE_ADMIN_PIN` (optional)
 
-### Backend Setup
+## Local Development
 
-1. Navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
+Install deps:
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+- `npm install`
 
-3. Start the backend server:
-   ```bash
-   npm run dev  # Development mode with nodemon
-   # or
-   npm start    # Production mode
-   ```
+Run full app (frontend + `api/` routes) locally:
 
-   The backend will run on `http://localhost:3001`
+- `npm run dev:full`
 
-### Frontend Setup
+If Vercel CLI asks you to authenticate:
 
-1. Navigate to the root directory:
-   ```bash
-   cd speedy-eats-tracker-main
-   ```
+- `npx vercel login`
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+Then test:
 
-3. Start the frontend development server:
-   ```bash
-   npm run dev
-   ```
+- `http://localhost:3000/api/orders`
 
-   The frontend will run on `http://localhost:8080` (or next available port)
+## Deployment (Vercel)
 
-## API Endpoints
-
-### Orders
-
-- `GET /api/orders` - Get all orders
-- `GET /api/orders/:token` - Get order by token
-- `POST /api/orders` - Create new order (with file upload)
-- `PUT /api/orders/:token/status` - Update order status
-- `DELETE /api/orders/:token` - Delete order
-- `DELETE /api/orders` - Clear all orders
-
-### File Uploads
-
-Payment screenshots are stored in the `backend/uploads/` directory and served at `/uploads/:filename`
-
-## Database
-
-The application uses SQLite database (`speedy_eats.db`) which is created automatically when the backend starts.
-
-## Development
-
-- Frontend hot reloading with Vite
-- Backend hot reloading with nodemon
-- TypeScript support for both frontend and backend
-- ESLint configuration for code quality
-
-## Admin Access
-
-Access the admin panel at `/admin` with PIN: `1234`
+1. Import the GitHub repo into Vercel.
+2. Add env vars in Vercel Project Settings:
+   - `UPSTASH_REDIS_REST_URL`
+   - `UPSTASH_REDIS_REST_TOKEN`
+3. Deploy, then verify:
+   - `<your-vercel-url>/api/orders`
